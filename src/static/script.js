@@ -11,7 +11,6 @@ function success(postion){
 	acc=position.coords.accuracy;
 	alert(lat + " " + longi + " " +acc);
 }
-
 function failure(){
 	alert("I failed");
 }
