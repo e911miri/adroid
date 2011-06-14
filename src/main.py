@@ -1,8 +1,9 @@
-import rest, ast
+import rest, ast, os
 import simplejson
 from datetime import datetime
 from google.appengine.api import users, oauth
 from google.appengine.ext import webapp, db
+from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from models import Service, Category
 
@@ -13,18 +14,20 @@ rest.Dispatcher.add_models({
   "cat": Category})
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        req=self.request
-        cats=Category.all()
-        svcs=Service.all()
-        self.response.out.write(simplejson.dumps([p.to_dict() for p in svcs]))
+        template_values={}
+        template_path=os.path.join(os.path.dirname(__file__),"templates/index.html")
+        template_values['svc']=Service.all()
+        template_values['cat']=Category.all()
+        self.response.out.write(template.render(template_path, template_values))
     def post(self):
         request=self.request      
         self.response.out.write(dict(ast.literal_eval(request.body))['name'])
 
 class CatHandler(webapp.RequestHandler):
     def get(self):
-        categories=Category.all()           
-        self.response.out.write(simplejson.dumps([p.to_dict() for p in categories]))    
+        self.redirect(users.create_login_url('/'))
+        categories=Category.all()          
+        self.response.out.write(simplejson.dumps([p.to_dict() for p in categories]))  
     def post(self):
         user= users.get_current_user()
         if user:
@@ -55,8 +58,6 @@ class Svc(webapp.RequestHandler):
 
 class Unregister(webapp.RequestHandler):
     pass
-
-
       
 def main():
     application = webapp.WSGIApplication(
