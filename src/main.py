@@ -49,7 +49,11 @@ class CatHandler(webapp.RequestHandler):
             self.redirect(users.create_login_url('/login'))
 
 class Search(webapp.RequestHandler):
-    pass
+    def get(self, **kargs):
+        params=kargs
+        if params['location']:
+            pass
+        pass
 
 
 class Svc(webapp.RequestHandler):
