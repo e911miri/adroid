@@ -15,7 +15,7 @@ class Category(db.Model):
 class Mode(db.Model):
     title=db.StringProperty()
     desc=db.TextProperty()
-    
+
 class Service(db.Model):
     title=db.StringProperty()
     desc=db.TextProperty()

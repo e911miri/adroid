@@ -1,4 +1,4 @@
-import rest, ast, os
+import rest, os
 import simplejson
 from datetime import datetime
 from google.appengine.api import users, oauth
@@ -20,8 +20,7 @@ class MainHandler(webapp.RequestHandler):
         template_values['cat']=Category.all()
         self.response.out.write(template.render(template_path, template_values))
     def post(self):
-        request=self.request      
-        self.response.out.write(dict(ast.literal_eval(request.body))['name'])
+        request=self.request
 
 class CatHandler(webapp.RequestHandler):
     def get(self):
@@ -29,24 +28,7 @@ class CatHandler(webapp.RequestHandler):
         categories=Category.all()          
         self.response.out.write(simplejson.dumps([p.to_dict() for p in categories]))  
     def post(self):
-        user= users.get_current_user()
-        if user:
-            req=dict(ast.literal_eval(self.request.body))
-            try:
-                title=req['title']
-            except:
-                pass
-            try:
-                desc=req['title']
-            except:
-                pass
-            c=Category()
-            c.title=title
-            c.desc=desc
-            c.put()
-            self.response.out.write(simplejson.dumps(c.to_dict()))  
-        else:
-            self.redirect(users.create_login_url('/login'))
+        self.redirect(users.create_login_url('/login'))
 
 class Search(webapp.RequestHandler):
     def get(self, **kargs):
