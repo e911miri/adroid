@@ -7,11 +7,21 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 from models import Service, Category
 
+
+#
+# Default Rest Service
+#
 rest.Dispatcher.base_url = "/rest"
 start=datetime.now()
 rest.Dispatcher.add_models({
   "svc": Service,
   "cat": Category})
+
+
+
+jsdecode= simplejson.JSONDecoder()
+
+
 class MainHandler(webapp.RequestHandler):
     def get(self):
         template_values={}
@@ -37,6 +47,10 @@ class Search(webapp.RequestHandler):
             pass
         pass
 
+class Register(webapp.RequestHandler):
+    def get(self):
+        temp = Service()
+        
 
 class Svc(webapp.RequestHandler):
     pass
