@@ -252,7 +252,7 @@ def parse_date_time(dt_str, dt_format, dt_type, allows_microseconds):
         dt_parts = dt_str.rsplit(".", 1)
         dt_str = dt_parts.pop(0)
         if(len(dt_parts) > 0):
-            ms = int(dt_parts[0].ljust(6,"0")[:6])
+            ms = int(dt_parts[0].ljust(6, "0")[:6])
     dt = datetime.strptime(dt_str, dt_format)
     if(ms):
         dt = dt.replace(microsecond=ms)
@@ -1195,7 +1195,7 @@ class Dispatcher(webapp.RequestHandler):
         """
         logging.info("adding models from module %s" % model_module)
         if(not exclude_model_types):
-            exclude_model_types=[]
+            exclude_model_types = []
         if(isinstance(model_module, basestring)):
             model_module = __import__(model_module)
         module_name = ""
@@ -1784,7 +1784,7 @@ class Dispatcher(webapp.RequestHandler):
                 redirect_url += "?" + self.request.query_string
             form_url = blobstore.create_upload_url(redirect_url)
             self.response.out.write('<html><body>')
-            self.response.out.write('<form action="%s" method="POST" enctype="%s">' %
+            self.response.out.write('<form action="%s" method="POST" enctype="%s">' % 
                                           (form_url, FORMDATA_CONTENT_TYPE))
             self.response.out.write("""Upload File: <input type="file" name="file"><br> <input type="submit" name="submit" value="Submit"> </form></body></html>""")
             raise DispatcherException()

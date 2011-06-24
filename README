@@ -1,0 +1,17 @@
+Hi Wande...
+To submit the application for the android adc, we want the application to perform the following tasks.
+
+1. Register a service, To do that, make a json post to coaafrica.appspot.com/apis/svc/new containing the following parameters:
+		title = db.StringProperty()
+		desc = db.TextProperty()
+		location = db.GeoPtProperty()		Representes as a string eg "3.11212, 3.233443" 
+		time = db.DateTimeProperty(auto_now_add=True)
+		extras = db.TextProperty()
+		category = db.StringProperty()   A list of Categories is displayed Category is Gotten from coaafrica.appspot.com/apis/svc/new
+		mode = db.StringProperty(choices=MODE_KEYS) Mode can either be fixed or variable
+
+2. Browse for Categories, to retireve categories, make a get request to coaafrica.appspot.com/apis/cat, you'll get a list of all categories entered in the database
+
+3. Browse for Services in a category: To do that, make a get request of this format coaafrica.appspot.com/apis/browsecat/<category title>
+
+3. retrieve a Service by passing in its key in this format coaafrica.appspot.com/apis/browse/<category title>/<service key>
