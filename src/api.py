@@ -37,11 +37,16 @@ class BrowseCat(webapp.RequestHandler):
             
 class NewService(webapp.RequestHandler):
     def get(self):
-        self.response.out.write('this is crap')
+        self.response.out.write('''please include s.category=temp['category']
+            s.desc=temp['desc'] 
+            s.extras=temp['extras']
+            s.location=db.GeoPtProperty(temp['location'])
+            s.mode=temp['mode']
+            s.title=temp['title']''')
     def post(self):
         data=self.request.body
         try:
-            temp=simplejson.loads(data)
+            temp=data
             s=Service()
             s.category=temp['category']
             s.desc=temp['desc'] 
@@ -54,7 +59,7 @@ class NewService(webapp.RequestHandler):
             self.response.out.write('not registered due to technical difficulties')
 
 application = webapp.WSGIApplication([('/apis/', MainPage),
-                                      ('/apis/svc', NewService),
+                                      ('/apis/svc/new', NewService),
                                       ('/apis/cat', Categories),
                                       ('/apis/browse/(.*)/(.*)', Browse),
                                       ('/apis/browsecat/(.*)', BrowseCat)

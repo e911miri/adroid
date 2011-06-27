@@ -29,27 +29,21 @@ class MainHandler(webapp.RequestHandler):
     def post(self):
         request = self.request
 
-class CatHandler(webapp.RequestHandler):
-    def get(self):        
-        cat=[]
-        for x in Category.all():
-            cat.append(x.to_dict())
-        self.response.out.write(simplejson.dumps(cat))
-#    
-#    def get(self):
-#        template_path = os.path.join(os.path.dirname(__file__), 'templates/categories.html')
-#        template_values = {'cat': Category.all()}
-#        self.response.out.write(template.render(template_path, template_values))
-#    def post(self):
-#        try:
-#            title = self.request.get('title')
-#            desc = self.request.get('desc')
-#        except:
-#            self.redirect('/categories')
-#        if title:
-#            c = Category(title=title, desc=desc)
-#            c.put()
-#        self.redirect('/categories')
+class CatHandler(webapp.RequestHandler):  
+    def get(self):
+        template_path = os.path.join(os.path.dirname(__file__), 'templates/categories.html')
+        template_values = {'cat': Category.all()}
+        self.response.out.write(template.render(template_path, template_values))
+    def post(self):
+        try:
+            title = self.request.get('title')
+            desc = self.request.get('desc')
+        except:
+            self.redirect('/categories')
+        if title:
+            c = Category(title=title, desc=desc)
+            c.put()
+        self.redirect('/categories')
 
 class Search(webapp.RequestHandler):
     def get(self):
