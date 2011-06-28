@@ -1,4 +1,4 @@
-import rest, os
+import os
 import webapp2
 import simplejson
 import logic
@@ -13,11 +13,7 @@ from google.appengine.ext.db import GqlQuery
 #
 # Default Rest Service
 #
-rest.Dispatcher.base_url = "/rest"
-start = datetime.now()
-rest.Dispatcher.add_models({
-  "svc": Service,
-  "cat": Category})
+
 
 class MainHandler(webapp.RequestHandler):
     def get(self):
@@ -85,7 +81,6 @@ def main():
           [('/', MainHandler),
            (r'/browse/(.*)/(.*)', BrowseServices),
            ('/categories', CatHandler),
-           ('/rest/.*', rest.Dispatcher)
           ], debug=True)
     run_wsgi_app(application)
 

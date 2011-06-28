@@ -5,10 +5,18 @@ Created on Jun 24, 2011
 '''
 from models import Service, Category
 import simplejson
+import rest
+from datetime import datetime
 from google.appengine.ext import webapp, gql
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 from google.appengine.ext.db import GqlQuery
+
+rest.Dispatcher.base_url = "/apis/rest"
+start = datetime.now()
+rest.Dispatcher.add_models({
+  "svc": Service,
+  "cat": Category})
 
 class MainPage(webapp.RequestHandler):
     def get(self):
@@ -37,31 +45,32 @@ class BrowseCat(webapp.RequestHandler):
             
 class NewService(webapp.RequestHandler):
     def get(self):
-        self.response.out.write('''please include s.category=temp['category']
-            s.desc=temp['desc'] 
-            s.extras=temp['extras']
-            s.location=db.GeoPtProperty(temp['location'])
-            s.mode=temp['mode']
-            s.title=temp['title']''')
+        svc_list=[]
+        for x in Service.all():
+            svc_list.append(x.to_dict())
+        self.response.out.write(simplejson.dumps(svc_list))
     def post(self):
         data=self.request.body
-        try:
-            temp=data
-            s=Service()
+        temp=data
+        s=Service()
+        try:            
             s.category=temp['category']
             s.desc=temp['desc'] 
             s.extras=temp['extras']
             s.location=db.GeoPtProperty(temp['location'])
             s.mode=temp['mode']
-            s.title=temp['title']
-            s.put()
+            s.title=temp['title']            
         except:
             self.response.out.write('not registered due to technical difficulties')
+        if s:
+            s.put()
+            self.restponse.out.write(s.title)
 
 application = webapp.WSGIApplication([('/apis/', MainPage),
-                                      ('/apis/svc/new', NewService),
+                                      ('/apis/svc', NewService),
                                       ('/apis/cat', Categories),
                                       ('/apis/browse/(.*)/(.*)', Browse),
+                                      ('/apis/rest/.*', rest.Dispatcher),
                                       ('/apis/browsecat/(.*)', BrowseCat)
                                      ],
                                      debug=True)
