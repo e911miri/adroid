@@ -23,7 +23,7 @@ class Service(db.Model):
     desc = db.TextProperty()
     location = db.GeoPtProperty()
     time = db.DateTimeProperty(auto_now_add=True)
-    extras = db.TextProperty()
+#    extras = db.TextProperty()
     category = db.StringProperty()
     mode = db.StringProperty(choices=MODE_KEYS)
     def to_dict(self):

@@ -66,12 +66,21 @@ class NewService(webapp.RequestHandler):
             s.put()
             self.restponse.out.write(s.title)
 
+class SearchHandler(webapp.RequestHandler):
+    def get(self):
+        pos=self.request.get('position')
+        cat=self.request.get('category')
+        if pos & cat:
+            query="SELECT * FROM Service HERE category='"+ cat + "'"
+            
+
 application = webapp.WSGIApplication([('/apis/', MainPage),
                                       ('/apis/svc', NewService),
                                       ('/apis/cat', Categories),
                                       ('/apis/browse/(.*)/(.*)', Browse),
                                       ('/apis/rest/.*', rest.Dispatcher),
-                                      ('/apis/browsecat/(.*)', BrowseCat)
+                                      ('/apis/browsecat/(.*)', BrowseCat),
+                                      ('/apis/search', SearchHandler),
                                      ],
                                      debug=True)
 
