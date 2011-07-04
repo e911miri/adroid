@@ -111,8 +111,8 @@ class OrderedDict(dict, DictMixin):
 
     def __eq__(self, other):
         if isinstance(other, OrderedDict):
-            return len(self)==len(other) and \
-                   all(p==q for p, q in  zip(self.items(), other.items()))
+            return len(self) == len(other) and \
+                   all(p == q for p, q in  zip(self.items(), other.items()))
         return dict.__eq__(self, other)
 
     def __ne__(self, other):

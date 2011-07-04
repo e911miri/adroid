@@ -24,42 +24,42 @@ class MainPage(webapp.RequestHandler):
 
 class Categories(webapp.RequestHandler):
     def get(self):
-        cats=[]
+        cats = []
         for x in Category.all():
             cats.append(x.to_dict())
         self.response.out.write(simplejson.dumps(cats))
 
 class Browse(webapp.RequestHandler):
     def get(self, category, service):
-        svc=Service.get_by_key_name(service)
+        svc = Service.get_by_key_name(service)
         self.response.out.write(simplejson.dumps(svc))
 
 class BrowseCat(webapp.RequestHandler):
     def get(self, category):
-        query="SELECT * FROM Service WHERE category='"+category+"'"
-        svcs=GqlQuery(query)
-        svc={}
+        query = "SELECT * FROM Service WHERE category='" + category + "'"
+        svcs = GqlQuery(query)
+        svc = {}
         for x in svcs:
-            svc[x.key()]=x.to_dict()
+            svc[x.key()] = x.to_dict()
         self.response.out.write(simplejson.dumps(svc))   
             
 class NewService(webapp.RequestHandler):
     def get(self):
-        svc_list=[]
+        svc_list = []
         for x in Service.all():
             svc_list.append(x.to_dict())
         self.response.out.write(simplejson.dumps(svc_list))
     def post(self):
-        data=self.request.body
-        temp=data
-        s=Service()
+        data = self.request.body
+        temp = data
+        s = Service()
         try:            
-            s.category=temp['category']
-            s.desc=temp['desc'] 
-            s.extras=temp['extras']
-            s.location=db.GeoPtProperty(temp['location'])
-            s.mode=temp['mode']
-            s.title=temp['title']            
+            s.category = temp['category']
+            s.desc = temp['desc'] 
+            s.extras = temp['extras']
+            s.location = db.GeoPtProperty(temp['location'])
+            s.mode = temp['mode']
+            s.title = temp['title']            
         except:
             self.response.out.write('not registered due to technical difficulties')
         if s:
@@ -68,10 +68,10 @@ class NewService(webapp.RequestHandler):
 
 class SearchHandler(webapp.RequestHandler):
     def get(self):
-        pos=self.request.get('position')
-        cat=self.request.get('category')
+        pos = self.request.get('position')
+        cat = self.request.get('category')
         if pos & cat:
-            query="SELECT * FROM Service HERE category='"+ cat + "'"
+            query = "SELECT * FROM Service HERE category='" + cat + "'"
             
 
 application = webapp.WSGIApplication([('/apis/', MainPage),
