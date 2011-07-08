@@ -68,10 +68,12 @@ class NewService(webapp.RequestHandler):
 
 class SearchHandler(webapp.RequestHandler):
     def get(self):
-        pos = self.request.get('position')
-        cat = self.request.get('category')
-        if pos & cat:
-            query = "SELECT * FROM Service HERE category='" + cat + "'"
+        loc=self.request.get('location').split(',')
+        lat=loc[0]
+        lon=loc[1]
+        cat=self.request.get('category')
+        radius=self.request.get('radius')
+        
             
 
 application = webapp.WSGIApplication([('/apis/', MainPage),
